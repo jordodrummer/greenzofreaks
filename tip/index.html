@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>greenzofreaks — tip the DJ</title>
+<meta name="description" content="Tip greenzofreaks. Fuel the transmission. Preset or name your price, paid securely through Stripe.">
+<meta name="theme-color" content="#04080a">
+<meta name="color-scheme" content="dark">
+<link rel="canonical" href="https://greenzofreaks.com/tip">
+
+<!-- Icons -->
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="greenzofreaks">
+<meta property="og:title" content="greenzofreaks — tip the DJ">
+<meta property="og:description" content="Fuel the transmission. Preset or name your price, paid securely through Stripe.">
+<meta property="og:url" content="https://greenzofreaks.com/tip">
+<meta property="og:image" content="https://greenzofreaks.com/greenzofreaks_airy_phosphor.png">
+<meta property="og:image:width" content="1500">
+<meta property="og:image:height" content="1500">
+<meta property="og:image:alt" content="greenzofreaks diffraction bullseye — a phosphor-green concentric ring sigil on near-black.">
+
+<!-- Twitter / X -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="greenzofreaks — tip the DJ">
+<meta name="twitter:description" content="Fuel the transmission. Preset or name your price, paid securely through Stripe.">
+<meta name="twitter:image" content="https://greenzofreaks.com/greenzofreaks_airy_phosphor.png">
+<meta name="twitter:image:alt" content="greenzofreaks diffraction bullseye — a phosphor-green concentric ring sigil on near-black.">
+
+<!--
+  ============================================================
+  STRIPE PAYMENT LINKS — REPLACE THE 4 PLACEHOLDER URLS BELOW
+  ============================================================
+  Create these in the DJ-tips Stripe account (Dashboard > Payment Links).
+  Each button links to its own hosted Stripe page. Apple/Google Pay
+  are enabled automatically on Stripe's page — nothing to wire here.
+
+    TIP_5      -> fixed $5   Payment Link
+    TIP_10     -> fixed $10  Payment Link
+    TIP_20     -> fixed $20  Payment Link
+    TIP_CUSTOM -> "customer chooses price" (pay-what-you-want) Payment Link
+
+  Find each anchor by its id (tip-5, tip-10, tip-20, tip-custom) and
+  swap the href. Leave everything else as-is.
+  ============================================================
+-->
+
+<style>
+  :root{
+    --bg:#04080a;
+    --bg-2:#06110d;
+    --green-deep:#1d8a54;
+    --green:#2fd97f;
+    --green-bright:#b8ffd8;
+    --ink:#f4fff6;
+    --ink-dim:#8fb7a3;
+    --rule:rgba(47,217,127,.22);
+    --card:rgba(47,217,127,.035);
+    --mono:ui-monospace, "SF Mono", SFMono-Regular, Menlo, "DejaVu Sans Mono", "Liberation Mono", Consolas, monospace;
+  }
+
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    min-height:100dvh;
+    background:
+      radial-gradient(120% 80% at 50% -10%, rgba(47,217,127,.10), transparent 60%),
+      radial-gradient(140% 100% at 50% 120%, rgba(29,138,84,.10), transparent 55%),
+      var(--bg);
+    color:var(--ink);
+    font-family:var(--mono);
+    font-size:16px;
+    line-height:1.5;
+    letter-spacing:.01em;
+    -webkit-font-smoothing:antialiased;
+    padding:calc(env(safe-area-inset-top) + 28px) 18px calc(env(safe-area-inset-bottom) + 40px);
+  }
+
+  /* ---- texture overlays (pure CSS, self-contained) ---- */
+  .fx{position:fixed;inset:0;pointer-events:none;z-index:9}
+  .fx.scan{
+    background:repeating-linear-gradient(
+      to bottom,
+      rgba(0,0,0,0) 0,
+      rgba(0,0,0,0) 2px,
+      rgba(0,0,0,.28) 3px,
+      rgba(0,0,0,0) 4px);
+    mix-blend-mode:multiply;opacity:.5;
+  }
+  .fx.grain{
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity:.05;mix-blend-mode:screen;
+  }
+  .fx.vig{box-shadow:inset 0 0 220px 40px rgba(0,0,0,.85)}
+
+  main{max-width:520px;margin:0 auto;position:relative;z-index:1}
+
+  /* ---- field-log meta strip ---- */
+  .meta{
+    display:flex;flex-wrap:wrap;gap:6px 12px;
+    justify-content:center;
+    font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--green-deep);
+    border:1px solid var(--rule);
+    border-radius:4px;
+    padding:8px 12px;
+    margin-bottom:26px;
+  }
+  .meta b{color:var(--green);font-weight:600}
+  .meta .live::before{
+    content:"";display:inline-block;width:7px;height:7px;margin-right:6px;
+    border-radius:50%;background:var(--green-bright);
+    box-shadow:0 0 8px var(--green-bright),0 0 2px #fff;
+    animation:blip 1.6s steps(1,end) infinite;vertical-align:middle;
+  }
+  @keyframes blip{0%,60%{opacity:1}61%,100%{opacity:.25}}
+
+  /* ---- header ---- */
+  header{text-align:center;margin-bottom:30px}
+  .sigil{
+    width:132px;height:132px;display:block;margin:0 auto 18px;
+    filter:drop-shadow(0 0 14px rgba(47,217,127,.45));
+  }
+  .sigil .ring{animation:pulse 4.5s ease-in-out infinite}
+  .sigil .ring:nth-child(2){animation-delay:.4s}
+  .sigil .ring:nth-child(3){animation-delay:.8s}
+  .sigil .ring:nth-child(4){animation-delay:1.2s}
+  @keyframes pulse{0%,100%{opacity:.9}50%{opacity:.45}}
+
+  h1{
+    margin:0;
+    font-size:clamp(24px,7.6vw,40px);
+    font-weight:700;letter-spacing:-.02em;line-height:1;word-break:break-word;
+    color:var(--green-bright);
+    text-shadow:0 0 18px rgba(47,217,127,.5),0 0 3px rgba(184,255,216,.6);
+  }
+  .tagline{
+    margin:14px auto 0;max-width:34ch;
+    font-size:14px;line-height:1.55;color:var(--ink-dim);
+  }
+  .tagline em{color:var(--green);font-style:normal}
+
+  .sep{
+    display:flex;align-items:center;gap:10px;
+    color:var(--green-deep);font-size:11px;letter-spacing:.22em;
+    text-transform:uppercase;margin:28px 2px 14px;
+  }
+  .sep::before,.sep::after{content:"";height:1px;flex:1;background:var(--rule)}
+
+  /* ---- tip grid ---- */
+  ol.dispatch{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+  ol.dispatch a{
+    display:flex;align-items:center;gap:14px;
+    min-height:64px;padding:12px 15px;
+    text-decoration:none;color:var(--ink);
+    background:var(--card);
+    border:1px solid var(--rule);
+    border-left:3px solid var(--green-deep);
+    border-radius:6px;
+    transition:border-color .18s ease,background .18s ease,transform .12s ease,box-shadow .18s ease;
+  }
+  ol.dispatch a:hover,
+  ol.dispatch a:focus-visible{
+    background:rgba(47,217,127,.09);
+    border-color:var(--green);
+    border-left-color:var(--green-bright);
+    box-shadow:0 0 0 1px rgba(47,217,127,.25),0 0 22px rgba(47,217,127,.14);
+  }
+  ol.dispatch a:active{transform:translateY(1px)}
+  ol.dispatch a:focus-visible{outline:2px solid var(--green-bright);outline-offset:2px}
+
+  .amt{
+    flex:0 0 auto;font-size:11px;letter-spacing:.12em;
+    color:var(--green-deep);text-align:center;min-width:64px;line-height:1.25;
+  }
+  .amt b{display:block;font-size:22px;color:var(--green);letter-spacing:.04em}
+  .body{flex:1 1 auto;min-width:0}
+  .plat{display:block;font-size:16px;font-weight:600;color:var(--green-bright);letter-spacing:.02em}
+  .addr{
+    display:block;font-size:12px;color:var(--ink-dim);margin-top:2px;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  }
+  .arrow{flex:0 0 auto;color:var(--green-deep);font-size:18px;transition:transform .18s ease,color .18s ease}
+  ol.dispatch a:hover .arrow,
+  ol.dispatch a:focus-visible .arrow{color:var(--green-bright);transform:translateX(3px)}
+
+  /* custom "name your price" row reads a touch louder */
+  ol.dispatch a.custom{border-left-color:var(--green)}
+  ol.dispatch a.custom .amt b{font-size:16px;letter-spacing:.06em}
+
+  .secure{
+    margin:22px auto 0;max-width:40ch;text-align:center;
+    font-size:11px;letter-spacing:.06em;color:var(--green-deep);
+  }
+  .secure b{color:var(--green)}
+
+  .back{
+    display:block;text-align:center;margin-top:26px;
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--green-deep);text-decoration:none;
+  }
+  .back:hover,.back:focus-visible{color:var(--green-bright)}
+
+  footer{
+    margin-top:30px;text-align:center;
+    font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--green-deep);
+  }
+  footer .glyph{color:var(--green);margin:0 6px}
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+  }
+</style>
+</head>
+<body>
+  <div class="fx grain" aria-hidden="true"></div>
+  <div class="fx scan" aria-hidden="true"></div>
+  <div class="fx vig" aria-hidden="true"></div>
+
+  <main>
+    <p class="meta">
+      <span>TIP JAR</span>
+      <span>FREQ <b>20&ndash;200 Hz</b></span>
+      <span class="live">STATUS <b>RECEIVING</b></span>
+    </p>
+
+    <header>
+      <!-- diffraction bullseye: concentric rings + bright core -->
+      <svg class="sigil" viewBox="0 0 200 200" role="img" aria-label="greenzofreaks diffraction bullseye">
+        <circle class="ring" cx="100" cy="100" r="92" fill="none" stroke="#1d8a54" stroke-width="1.5" opacity="0.35"/>
+        <circle class="ring" cx="100" cy="100" r="72" fill="none" stroke="#1d8a54" stroke-width="2" opacity="0.55"/>
+        <circle class="ring" cx="100" cy="100" r="52" fill="none" stroke="#2fd97f" stroke-width="2.5" opacity="0.8"/>
+        <circle class="ring" cx="100" cy="100" r="32" fill="none" stroke="#2fd97f" stroke-width="3"/>
+        <circle cx="100" cy="100" r="14" fill="#b8ffd8"/>
+        <circle cx="100" cy="100" r="8" fill="#ffffff"/>
+      </svg>
+
+      <h1>tip the DJ</h1>
+      <p class="tagline">liked the set? <em>fuel the transmission.</em> every tip keeps the bass rolling.</p>
+    </header>
+
+    <div class="sep" role="separator" aria-hidden="true">Send it</div>
+
+    <nav aria-label="Tip amounts">
+      <ol class="dispatch">
+
+        <li>
+          <a id="tip-5" href="https://buy.stripe.com/REPLACE_TIP_5">
+            <span class="amt">USD<b>$5</b></span>
+            <span class="body"><span class="plat">Round of applause</span><span class="addr">quick thanks for the vibe</span></span>
+            <span class="arrow" aria-hidden="true">&rarr;</span>
+          </a>
+        </li>
+
+        <li>
+          <a id="tip-10" href="https://buy.stripe.com/REPLACE_TIP_10">
+            <span class="amt">USD<b>$10</b></span>
+            <span class="body"><span class="plat">Buy the DJ a drink</span><span class="addr">keep the energy up</span></span>
+            <span class="arrow" aria-hidden="true">&rarr;</span>
+          </a>
+        </li>
+
+        <li>
+          <a id="tip-20" href="https://buy.stripe.com/REPLACE_TIP_20">
+            <span class="amt">USD<b>$20</b></span>
+            <span class="body"><span class="plat">Front row energy</span><span class="addr">you felt that one</span></span>
+            <span class="arrow" aria-hidden="true">&rarr;</span>
+          </a>
+        </li>
+
+        <li>
+          <a id="tip-custom" class="custom" href="https://buy.stripe.com/REPLACE_TIP_CUSTOM">
+            <span class="amt">USD<b>Your call</b></span>
+            <span class="body"><span class="plat">Name your price</span><span class="addr">tip whatever feels right</span></span>
+            <span class="arrow" aria-hidden="true">&rarr;</span>
+          </a>
+        </li>
+
+      </ol>
+    </nav>
+
+    <p class="secure">
+      Payments handled by <b>Stripe</b>. Apple&nbsp;Pay &amp; Google&nbsp;Pay supported. No account needed.
+    </p>
+
+    <a class="back" href="/">&larr; back to transmissions</a>
+
+    <footer>
+      A Greenzo Productions <span class="glyph">//</span> transmission.
+    </footer>
+  </main>
+</body>
+</html>
